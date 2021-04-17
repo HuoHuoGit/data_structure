@@ -28,7 +28,11 @@ struct stack *create_stack(void)
 
     return s;
 }
-void dispose_stack(struct stack *s);
+void dispose_stack(struct stack *s)
+{
+    make_empty(s);
+    free(s);
+}
 void make_empty(struct stack *s)
 {
     if(s == NULL) {

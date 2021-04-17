@@ -9,7 +9,7 @@ struct stack;
 
 int is_empty(struct stack *s);
 struct stack *create_stack(void);
-void dispose_stack(struct stack *s);
+void dispose_stack(struct stack *s);//delete stack
 void make_empty(struct stack *s);
 void push(int x, struct stack *s);
 int top(struct stack *s);
