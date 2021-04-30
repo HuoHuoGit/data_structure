@@ -52,6 +52,54 @@ struct tree_node* find_max(struct tree_node *t)
     return t;
 }
 
-struct tree_node* insert(int x, struct tree_node *t);
-struct tree_node* delete(int x, struct tree_node *t);
+struct tree_node* insert(int x, struct tree_node *t)
+{
+    if(!t) {
+        t = malloc(sizeof(struct tree_node));
+        if(!t) {
+            printf("No memory\n");
+            return NULL;
+        };
+
+        t->element = x;
+        t->left = NULL;
+        t->right = NULL;
+    } else {
+        if(x < t->element)
+            t->left = insert(x, t->left);
+        else if(x > t->element)
+            t->right = insert(x, t->right);
+    }
+
+    return t;
+}
+
+struct tree_node* delete(int x, struct tree_node *t)
+{
+    struct tree_node *tmp = NULL;
+
+    if(!t) {
+        printf("Element not found\n");
+        return NULL;
+    }
+
+    if(x < t->left)
+        t->left = delete(x, t->left);
+    else if(x > t->right)
+        t->right = delete(t->right);
+    else if(t->left && t->right){
+        tmp = find_min(t->right);
+        t->element = tmp->element;
+        t->right = delete(tmp->element, t->right);
+    } else {
+        tmp = t;
+        if(!t->left)
+            t = t->left;
+        else
+            t = t->right;
+        free(tmp);
+    }
+
+}
+
 int retrieve(struct tree_node *t);
