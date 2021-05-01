@@ -1,5 +1,6 @@
 #include "search_tree.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 struct tree_node {
     int element;
@@ -83,10 +84,10 @@ struct tree_node* delete(int x, struct tree_node *t)
         return NULL;
     }
 
-    if(x < t->left)
+    if(x < t->left->element)
         t->left = delete(x, t->left);
-    else if(x > t->right)
-        t->right = delete(t->right);
+    else if(x > t->right->element)
+        t->right = delete(x, t->right);
     else if(t->left && t->right){
         tmp = find_min(t->right);
         t->element = tmp->element;
