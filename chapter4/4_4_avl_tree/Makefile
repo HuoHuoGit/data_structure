@@ -1,8 +1,8 @@
 test: Main.cpp
 	cl.exe /Zi /EHsc /nologo /Fe: test.exe Main.cpp	
 
-avl_tree: avl_tree.*
-	cl /Ch avl_tree.*
+avl_tree.obj : avl_tree.*
+	cl /c avl_tree.c
 
 .PHONY: clean
 clean:
