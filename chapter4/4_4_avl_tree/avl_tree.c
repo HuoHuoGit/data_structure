@@ -141,19 +141,21 @@ struct avl_node* insert(int x, struct avl_node *t)
         t->left =  insert(x, t->left);
         if(abs(height(t->left)-height(t->right)) == 2) {
             if(x < t->left->element)            //左子树
-                single_rotate_left(t);
+                t = single_rotate_left(t);
             else                                //右子树
-                double_rotate_left(t);
+                t = double_rotate_left(t);
         }
     } else if(x > t->element) {         //右子树
         t->right = insert(x, t->right);
         if(abs(height(t->left)-height(t->right)) == 2) {
             if(x < t->right->element)
-                single_rotate_right(t);         //右子树
+                t = single_rotate_right(t);         //右子树
             else
-                double_rotate_right(t);         //左子树
+                t = double_rotate_right(t);         //左子树
         }
     }
+
+    t->height = max(height(t->left), height(t->right)) + 1;
 
     return t;
 }
