@@ -1,4 +1,5 @@
 #include "separate_hash.h"
+#include "..\..\chapter3\3_2_4_List\list.h"
 #include <stdlib.h>
 #include <stdbool.h>
 
@@ -29,6 +30,15 @@ static int next_prime(int x)
     }
     
     return x;
+}
+
+static int hash(int key, int tabl_size)//dummy function
+{
+    unsigned int hash_val = 0;
+
+    //while()
+
+    return key;
 }
 
 struct hash_tbl* init_table(int table_size)
@@ -66,8 +76,38 @@ struct hash_tbl* init_table(int table_size)
 
     return h;
 }
+
 void destroy_table(struct hash_tbl *h);
 
-struct list_node* find(int key, struct hash_tbl *h);
-void insert(int key, struct hash_tbl *h);
+struct list_node* find(int key, struct hash_tbl *h)
+{
+    struct list_node *p = NULL;
+    struct list_node *l = NULL;
+
+    l = h->list[hash(key, h->table_size)];
+    p = l->next;
+    while (!p && p->element!=key)
+        p = p->next;
+
+    return p;
+}
+
+void insert(int key, struct hash_tbl *h)
+{
+    struct list_node *p=NULL, *new_cell=NULL, *l=NULL;
+
+    p = find(key, h);
+    if(!p) {
+        new_cell = malloc(sizeof(struct list_node));
+        if(!new_cell) {
+            printf("Out of space\n");
+            return;
+        }
+        l = h->list[hash(key, h->table_size)];
+        new_cell->next = l->next;//把新插入的元素放在列表的前端
+        new_cell->element = key;
+        l->next = new_cell;
+    }
+}
+
 int retrieve(struct list_node *p);
