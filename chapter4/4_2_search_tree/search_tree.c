@@ -10,7 +10,7 @@ struct tree_node {
 
 struct tree_node* make_empty(struct tree_node *t)
 {
-    if(!t) {
+    if(t) {
         make_empty(t->left);
         make_empty(t->right);
         free(t);
@@ -45,7 +45,7 @@ struct tree_node* find_min(struct tree_node *t)
 
 struct tree_node* find_max(struct tree_node *t)
 {
-    if(!t)
+    if(t)
         while (t->right) {
             t = t->right;
         }
@@ -58,7 +58,7 @@ struct tree_node* insert(int x, struct tree_node *t)
     if(!t) {
         t = malloc(sizeof(struct tree_node));
         if(!t) {
-            printf("No memory\n");
+            printf("Out of space\n");
             return NULL;
         };
 
@@ -94,13 +94,14 @@ struct tree_node* delete(int x, struct tree_node *t)
         t->right = delete(tmp->element, t->right);
     } else {
         tmp = t;
-        if(!t->left)
+        if(t->left)
             t = t->left;
         else
             t = t->right;
         free(tmp);
     }
 
+    return t;
 }
 
 int retrieve(struct tree_node *t);
