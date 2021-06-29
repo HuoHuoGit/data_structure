@@ -2,14 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MIN_PQ_SIZE 20
+#define MIN_PQ_SIZE 10
 #define MIN_ELEMENT -1
-
-struct HeapStruct {
-    int Capacity;
-    int Size;
-    int *Elements;
-};
 
 PriorityQueue Initialize(int MaxElements)
 {
@@ -111,4 +105,30 @@ int IsEmpty(PriorityQueue Queue)
 int IsFull(PriorityQueue Queue)
 {
     return Queue->Size == Queue->Capacity;
+}
+
+void PercolateDown(PriorityQueue Queue, int i)
+{
+    int Child = 0;
+    int tmp = 0;
+
+    if(!Queue)
+        return;
+
+    if(i > Queue->Size || i*2 > Queue->Size)
+        return;
+
+    tmp = Queue->Elements[i];
+    for(; i<Queue->Size; i=Child) {
+        Child = i*2;
+        if(Child < Queue->Size && Queue->Elements[Child+1]<Queue->Elements[Child])
+            Child++;
+
+        if(tmp > Queue->Elements[Child]) {
+            Queue->Elements[i] = Queue->Elements[Child];
+        } else
+            break;
+    }
+
+    Queue->Elements[i] = tmp;
 }

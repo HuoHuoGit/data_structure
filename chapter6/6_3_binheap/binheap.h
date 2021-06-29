@@ -1,7 +1,12 @@
 #ifndef _BINHEAP_H_
 #define _BINHEAP_H_
 
-struct HeapStruct;
+struct HeapStruct {
+    int Capacity;
+    int Size;
+    int *Elements;
+};
+
 typedef struct HeapStruct *PriorityQueue;
 
 PriorityQueue Initialize(int max_elements);
@@ -12,5 +17,6 @@ int DeleteMin(PriorityQueue Queue);
 int FindMin(PriorityQueue Queue);
 int IsEmpty(PriorityQueue Queue);
 int IsFull(PriorityQueue Queue);
+void PercolateDown(PriorityQueue Queue, int i);
 
 #endif
