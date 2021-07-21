@@ -74,7 +74,7 @@ void init(struct graph *g)
         printf("%s: %d, out of space\n", __FUNCTION__, __LINE__);
         return;
     }
-    memset(g->indegree, 0, g->capacity+1);
+    memset(g->indegree, 0,(g->capacity+1)*sizeof(int));
 
     for(i=1; i<g->capacity+1; i++) {
         tmp = g->l[i].next;
@@ -155,7 +155,7 @@ int main(void)
 {
     struct graph g;
     g.capacity = 7;
-    g.l = malloc(sizeof(struct graph)*(g.capacity+1));
+    g.l = malloc(sizeof(struct list)*(g.capacity+1));
     if(!g.l) {
         printf("%s: %d, out of space\n", __FUNCTION__, __LINE__);
     }
