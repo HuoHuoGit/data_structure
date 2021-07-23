@@ -12,7 +12,7 @@ struct vertex {
     int known;
     int dis;
     int path;
-    struct list *l;
+    struct list l;
 };
 
 struct graph {
@@ -23,16 +23,20 @@ struct graph {
 
 void list_insert(struct list *l, int element)
 {
-    while(l) {
+    if(!l) {
+        printf("%s: %d, list is NULL\n", __FUNCTION__, __LINE__);
+    }
+
+    while(l->next) {
         l = l->next;
     }
-    l = malloc(sizeof(struct list));
+    l->next = malloc(sizeof(struct list));
     if(!l) {
         printf("Out of space\n");
         return;
     }
-    l->element = element;
-    l->next = NULL;
+    l->next->element = element;
+    l->next->next = NULL;
 }
 
 void init(struct graph *g)
@@ -44,48 +48,56 @@ void init(struct graph *g)
     g->vertex[1].known = 0;
     g->vertex[1].dis = INT_MAX;
     g->vertex[1].path = 0;
-    list_insert(g->vertex[1].l, 2);
-    list_insert(g->vertex[1].l, 4);
+    g->vertex[1].l.element = 2;
+    g->vertex[1].l.next = NULL;
+    list_insert(&g->vertex[1].l, 4);
 
     g->vertex[2].v = 2;
     g->vertex[2].known = 0;
     g->vertex[2].dis = INT_MAX;
     g->vertex[2].path = 0;
-    list_insert(g->vertex[2].l, 4);
-    list_insert(g->vertex[2].l, 5);
+    g->vertex[2].l.element = 4;
+    g->vertex[2].l.next = NULL;
+    list_insert(&g->vertex[2].l, 5);
 
     g->vertex[3].v = 3;
     g->vertex[3].known = 1;//Start vertex
     g->vertex[3].dis = 0;
     g->vertex[3].path = 0;
-    list_insert(g->vertex[3].l, 1);
-    list_insert(g->vertex[3].l, 6);
+    g->vertex[3].l.element = 1;
+    g->vertex[3].l.next = NULL;
+    list_insert(&g->vertex[3].l, 6);
 
     g->vertex[4].v = 4;
     g->vertex[4].known = 0;
     g->vertex[4].dis = INT_MAX;
     g->vertex[4].path = 0;
-    list_insert(g->vertex[4].l, 3);
-    list_insert(g->vertex[4].l, 5);
-    list_insert(g->vertex[4].l, 6);
-    list_insert(g->vertex[4].l, 7);
+    g->vertex[4].l.element = 3;
+    g->vertex[4].l.next = NULL;
+    list_insert(&g->vertex[4].l, 5);
+    list_insert(&g->vertex[4].l, 6);
+    list_insert(&g->vertex[4].l, 7);
 
     g->vertex[5].v = 5;
     g->vertex[5].known = 0;
     g->vertex[5].dis = INT_MAX;
     g->vertex[5].path = 0;
-    list_insert(g->vertex[5].l, 7);
+    g->vertex[5].l.element = 7;
+    g->vertex[5].l.next = NULL;
 
     g->vertex[6].v = 6;
     g->vertex[6].known = 0;
     g->vertex[6].dis = INT_MAX;
     g->vertex[6].path = 0;
+    g->vertex[6].l.element = 0;
+    g->vertex[6].l.next = NULL;
 
     g->vertex[7].v = 7;
     g->vertex[7].known = 0;
     g->vertex[7].dis = INT_MAX;
     g->vertex[7].path = 0;
-    list_insert(g->vertex[7].l, 6);
+    g->vertex[7].l.element = 6;
+    g->vertex[7].l.next = NULL;
 
     g->indegree = malloc((g->capacity+1)*sizeof(int));
     if(!g->indegree) {
@@ -122,21 +134,16 @@ void dump_graph(struct graph *g)
     struct list *tmp;
 
     for(i=1; i<g->capacity+1; i++) {
-        tmp = g->vertex[i].l;
+        printf("vertext: %d->\t", g->vertex[i].v);
+        tmp = &g->vertex[i].l;
         while (tmp){
             printf("%d\t", tmp->element);
             tmp = tmp->next;
         }
         printf("\n");
+        printf("konw: %d\ndis: %d\npath: %d\n", g->vertex[i].known, g->vertex[i].dis, g->vertex[i].path);
+        printf("***************\n");
     }
-
-#if 0
-    printf("Indegree: ");
-    for(i=1; i<g->capacity+1; i++) {
-        printf("%d: %d\t", i, g->indegree[i]);
-    }
-    printf("\n");
-#endif
 }
 
 int main(void)
