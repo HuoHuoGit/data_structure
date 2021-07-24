@@ -61,8 +61,8 @@ void init(struct graph *g)
     list_insert(&g->vertex[2].l, 5);
 
     g->vertex[3].v = 3;
-    g->vertex[3].known = 1;//Start vertex
-    g->vertex[3].dis = 0;
+    g->vertex[3].known = 0;
+    g->vertex[3].dis = 0;//Start vertex
     g->vertex[3].path = 0;
     g->vertex[3].l.element = 1;
     g->vertex[3].l.next = NULL;
@@ -107,27 +107,6 @@ void init(struct graph *g)
     memset(g->indegree, 0, g->capacity+1);
 }
 
-int find_zero_indegree(struct graph *g)
-{
-    int i = 0;
-
-    for(i=1; i<g->capacity+1; i++) {
-        if(g->indegree[i] == 0)
-            return i;
-    }
-
-    return -1;
-}
-void print_indegree(struct graph *g)
-{
-    int i = 0;
-    printf("Indegree: ");
-    for(i=1; i<g->capacity+1; i++) {
-        printf("%d: %d\t", i, g->indegree[i]);
-    }
-    printf("\n");
-}
-
 void dump_graph(struct graph *g)
 {
     int i = 0;
@@ -146,6 +125,32 @@ void dump_graph(struct graph *g)
     }
 }
 
+void unweighted(struct graph *g)
+{
+    int curr_dis = 0;
+    int i = 1;
+    struct list *tmp;
+
+    for(curr_dis=0; curr_dis<g->capacity; curr_dis++) {
+        for(i=1; i<g->capacity; i++) {
+            if(!g->vertex[i].known && g->vertex[i].dis==curr_dis) {
+                g->vertex[i].known = 1;
+                tmp = &g->vertex[i].l;
+                while (tmp)
+                {
+                    //if(tmp->element == 0)
+                    //    continue;
+                    if(g->vertex[tmp->element].dis == INT_MAX) {
+                        g->vertex[tmp->element].dis = curr_dis+1;
+                        g->vertex[tmp->element].path = g->vertex[i].v;
+                    }
+                    tmp = tmp->next;
+                }
+            }
+        }
+    }
+}
+
 int main(void)
 {
     struct graph g;
@@ -156,6 +161,9 @@ int main(void)
     }
     memset(g.vertex, 0, sizeof(struct vertex)*(g.capacity+1));
     init(&g);
+    dump_graph(&g);
+    unweighted(&g);
+    printf("\n++++++++++++++++\n");
     dump_graph(&g);
 
     return 0;
