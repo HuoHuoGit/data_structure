@@ -1,5 +1,5 @@
-test: unweighted.c
-	cl /Zi /Fetest unweighted.c
+test: disj_set.c
+	cl /Zi /Fetest disj_set.c
 
 .PHONY: clean
 clean:

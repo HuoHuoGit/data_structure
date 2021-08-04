@@ -1,4 +1,5 @@
 #include "disj_set.h"
+#include <stdio.h>
 
 void Init(DisjSet s)
 {
@@ -19,4 +20,21 @@ SetType Find(ElementType x, DisjSet s)
         return x;
     else
         return Find(s[x], s);
+}
+
+int main(void)
+{
+    DisjSet s;
+    int i = 0;
+
+    Init(s);
+
+    SetUnion(s, 5, 6);
+    printf("Find(5) = %d\n", Find(5, s));
+    printf("Find(6) = %d\n", Find(6, s));
+
+    for(i=1; i<NUM_SETS+1; i++) {
+        printf("%d: %d\t", i, s[i]);
+    }
+    printf("\n");
 }
