@@ -121,7 +121,10 @@ void PercolateDown(PriorityQueue Queue, int i)
     tmp = Queue->Elements[i];
     for(; i<Queue->Size; i=Child) {
         Child = i*2;
-        if(Child < Queue->Size && Queue->Elements[Child+1]<Queue->Elements[Child])
+        if(Child > Queue->Size)
+            break;
+
+        if(Queue->Elements[Child+1]<Queue->Elements[Child])
             Child++;
 
         if(tmp > Queue->Elements[Child]) {
